@@ -50,6 +50,9 @@ for a in range(16):
             prod = Gammas[a] @ Gammas[b]
             if (prod == Gamma_1).all() == False:
                 cond1 += 1
+            else:
+                xi[a, b] = 1
+                co[a, b] = 1
         if a != b:
             prod = Gammas[a] @ Gammas[b]
             for k in range(16):
