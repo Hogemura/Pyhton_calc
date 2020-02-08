@@ -129,3 +129,17 @@ for i in range(1, 16):
 
 if cond5 == 0:
     print('proposition 5 is correct !')
+
+gamma_5 = 1j * gamma_0 @ gamma_1 @ gamma_2 @ gamma_3
+gammas = [gamma_0, gamma_1, gamma_2, gamma_3]
+
+cond6 = 0
+
+for i in range(4):
+    for j in range(4):
+        bool = gamma_5 @ gammas[i] @ gammas[j] == gammas[i] @ gammas[j] @ gamma_5
+        if bool.all() != True:
+            cond6 += 1
+
+if cond6 == 0:
+    print('gamma_5 and sigma_{mu nu} commutes !')
