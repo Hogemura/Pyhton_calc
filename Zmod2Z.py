@@ -54,13 +54,23 @@ for i in range(unique_subgroup_num):
 
 unique_subgroups_value = list(unique_subgroups_value.keys())
 
-unique_subgroups = np.zeros([unique_subgroup_num, 7])
+unique_subgroups_index = np.zeros([unique_subgroup_num, 7], dtype=int)
 
 for i in range(unique_subgroup_num):
     VAL = unique_subgroups_value[i]
     for j in range(7):
-        unique_subgroups[i, j] = VAL // 16 ** (6 - j)
+        unique_subgroups_index[i, j] = VAL // 16 ** (6 - j)
         VAL = VAL % 16 ** (6 - j)
 
-print(unique_subgroups)
-print(unique_subgroup_num)
+unique_subgroups = []
+for i in range(unique_subgroup_num):
+    subgroup = []
+    for j in range(7):
+        subgroup.append(list(Z[unique_subgroups_index[i, j]]))
+    subgroup.append(list(b0))
+    unique_subgroups.append(subgroup)
+
+
+print("There are", unique_subgroup_num, "subgroups of (Z/2Z)^4 with index 2.")
+for i in range(unique_subgroup_num):
+    print("subgroup", i, ":", unique_subgroups[i])
