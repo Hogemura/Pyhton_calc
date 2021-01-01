@@ -7,7 +7,14 @@ b2 = np.array([0, 1, 0, 0])
 b3 = np.array([0, 0, 1, 0])
 b4 = np.array([0, 0, 0, 1])
 
-Z = [b0, b1, b2, b3, b4, b1 + b2, b2 + b3, b3 + b4, b4 + b1, b1 + b3, b2 + b4, b1 + b2 + b3, b1 + b2 + b4, b1 + b3 + b4, b2 + b3 + b4, b1 + b2 + b3 + b4]
+
+Z = []
+
+for i in range(2):
+    for j in range(2):
+        for k in range(2):
+            for l in range(2):
+                Z.append(i * b1 + j * b2 + k * b3 + l * b4)
 
 Z_value = [0 for i in range(16)]
 for i in range(16):
