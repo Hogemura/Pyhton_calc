@@ -3,6 +3,11 @@ import numpy as np
 
 zero = np.zeros([2, 2])
 identity = np.identity(2)
+metric = np.array([
+[1, 0, 0, 0],
+[0, -1, 0, 0],
+[0, 0, -1, 0],
+[0, 0, 0, -1]])
 
 sigma_1 = np.array([[0, 1], [1, 0]])
 sigma_2 = np.array([[0, -1j], [1j, 0]])
@@ -20,7 +25,11 @@ gammaM_3 = np.concatenate([np.concatenate([-1j * sigma_1, zero]), np.concatenate
 
 gammaM_5 = 1j * gammaM_0 @ gammaM_1 @ gammaM_2 @ gammaM_3
 
-print(gammaM_5 == np.concatenate([np.concatenate([sigma_2, zero]), np.concatenate([zero, -sigma_2])], axis=1))
+check = 0
+bool = gammaM_5 == np.concatenate([np.concatenate([sigma_2, zero]), np.concatenate([zero, -sigma_2])], axis=1)
+if bool.all() == False:
+    check += 1
+print(check)
 
 Unit = np.concatenate([np.concatenate([identity, sigma_2]), np.concatenate([sigma_2, -identity])], axis=1)
 
@@ -28,4 +37,36 @@ gammas_D = [gamma_0, gamma_1, gamma_2, gamma_3]
 gammas_M = [gammaM_0, gammaM_1, gammaM_2, gammaM_3]
 
 for i in range(4):
-    print(gammas_M[i] == Unit @ gammas_D[i] @ Unit * 1 / 2)
+    bool = gammas_M[i] == Unit @ gammas_D[i] @ Unit * 1 / 2
+    if bool.all() == False:
+        check += 1
+print(check)
+
+for i in range(4):
+    for k in range(4):
+        bool = gammas_M[i] @ gammas_M[k] + gammas_M[k] @ gammas_M[i] == 2 * metric[i][k] * np.identity(4)
+        if bool.all() == False:
+            check += 1
+print(check)
+
+bool = np.conjugate(gammas_M[0].T) == gammas_M[0]
+if bool.all() == False:
+    check += 1
+
+for i in range(1, 4):
+    bool = np.conjugate(gammas_M[i].T) == -gammas_M[i]
+    if bool.all() == False:
+        check += 1
+print(check)
+
+for i in range(4):
+    bool = np.conjugate(gammas_M[i]) == -gammas_M[i]
+    if bool.all() == False:
+        check += 1
+print(check)
+
+for i in range(4):
+    bool = gammas_M[0] @ gammas_M[i].T @ gammas_M[0] == -gammas_M[i]
+    if bool.all() == False:
+        check += 1
+print(check)
