@@ -13,7 +13,11 @@ sigma_1 = np.array([[0, 1], [1, 0]])
 sigma_2 = np.array([[0, -1j], [1j, 0]])
 sigma_3 = np.array([[1, 0], [0, -1]])
 
-gamma_0 = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, -1]], dtype=np.complex128)
+gamma_0 = np.array([
+[1, 0, 0, 0],
+[0, 1, 0, 0],
+[0, 0, -1, 0],
+[0, 0, 0, -1]], dtype=np.complex128)
 gamma_1 = np.concatenate([np.concatenate([zero, -sigma_1]), np.concatenate([sigma_1, zero])], axis=1)
 gamma_2 = np.concatenate([np.concatenate([zero, -sigma_2]), np.concatenate([sigma_2, zero])], axis=1)
 gamma_3 = np.concatenate([np.concatenate([zero, -sigma_3]), np.concatenate([sigma_3, zero])], axis=1)
@@ -33,7 +37,9 @@ print(check)
 
 Unit = np.concatenate([np.concatenate([identity, sigma_2]), np.concatenate([sigma_2, -identity])], axis=1)
 
+# Dirac
 gammas_D = [gamma_0, gamma_1, gamma_2, gamma_3]
+# Majorana
 gammas_M = [gammaM_0, gammaM_1, gammaM_2, gammaM_3]
 
 for i in range(4):
@@ -69,4 +75,40 @@ for i in range(4):
     bool = gammas_M[0] @ gammas_M[i].T @ gammas_M[0] == -gammas_M[i]
     if bool.all() == False:
         check += 1
+print(check)
+
+# T_{j=1}
+T_1 = np.array([
+[0, 1, 0],
+[1, 0, 1],
+[0, 1, 0]
+], dtype=np.complex128)
+ # * 2 ** (-0.5)
+
+T_2 = np.array([
+[0, -1j, 0],
+[1j, 0, -1j],
+[0, 1j, 0]
+], dtype=np.complex128)
+ # * 2 ** (-0.5)
+
+T_3 = np.array([
+[2, 0, 0],
+[0, 0, 0],
+[0, 0, -2]
+], dtype=np.complex128)
+
+bool =  T_1 @ T_2 - T_2 @ T_1 == 1j * T_3
+if bool.all() == False:
+    check += 1
+print(check)
+
+bool =  T_2 @ T_3 - T_3 @ T_2 == 2j * T_1
+if bool.all() == False:
+    check += 1
+print(check)
+
+bool =  T_3 @ T_1 - T_1 @ T_3 == 2j * T_2
+if bool.all() == False:
+    check += 1
 print(check)
